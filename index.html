@@ -496,6 +496,15 @@
             scroll-behavior: smooth;
         }
         
+        /* Search highlighting */
+        mark {
+            background-color: #fde047 !important;
+            color: #1f2937 !important;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+        }
+        
         /* Loading message */
         .loading-message {
             text-align: center;
@@ -990,8 +999,10 @@
             if (!searchTerm || searchTerm.trim() === '') return text;
             
             const term = searchTerm.trim();
-            const regex = new RegExp(`(${term})`, 'gi');
-            return text.replace(regex, '<mark style="background-color: #fde047; padding: 0.125rem 0.25rem; border-radius: 0.25rem;">$1</mark>');
+            // Escape special regex characters
+            const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedTerm})`, 'gi');
+            return text.replace(regex, '<mark style="background-color: #fde047; padding: 0.125rem 0.25rem; border-radius: 0.25rem; font-weight: 500;">$1</mark>');
         }
         
         function searchEntries(searchTerm) {
@@ -1038,8 +1049,6 @@
                 monthFiltersContainer.innerHTML = '<p style="font-size: 0.875rem; color: #6b7280; font-style: italic; padding: 0.5rem 1rem;">No months in results</p>';
                 commenterFiltersContainer.innerHTML = '<p style="font-size: 0.875rem; color: #6b7280; font-style: italic; padding: 0.5rem 1rem;">No supporters in results</p>';
             }
-            
-            window.scrollTo({ top: 400, behavior: 'smooth' });
         }
         
         function renderEntriesWithHighlight(entries, searchTerm) {
@@ -1433,7 +1442,7 @@
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => {
                     searchEntries(e.target.value);
-                }, 300);
+                }, 800); // Increased delay to 800ms so you can finish typing
             });
             
             showAllBtn.addEventListener('click', () => {
