@@ -51,17 +51,14 @@
         header h1 {
             font-size: 2.25rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #1f2937;
             margin-bottom: 0.5rem;
             display: block;
             letter-spacing: -0.025em;
         }
         
         .subtitle {
-            color: #9f1239;
+            color: #1f2937;
             font-size: 1.125rem;
             font-weight: 600;
             margin-top: 0.5rem;
@@ -769,8 +766,8 @@
     <header>
         <div class="container">
             <h1>Audrey Camille Nowak</h1>
-            <p class="subtitle">A Cancer Journey of Hope, Courage, and Unwavering Love</p>
-            <p class="Angel Posts:">🦋 January 1, 2024 - October 14, 2025 🦋</p>
+            <p class="subtitle">A Journey of Hope, Courage, and Unwavering Love</p>
+            <p class="date-range">🦋 January 1, 2024 - October 14, 2025 🦋</p>
         </div>
     </header>
 
@@ -798,14 +795,11 @@
                 <div id="search-results" style="margin-top: 0.5rem; font-size: 0.875rem; color: #fce7f3;"></div>
             </div>
             
-            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
-                <button id="go-to-first-btn" class="btn" style="display: none; background: linear-gradient(135deg, #be185d 0%, #9f1239 100%); color: white; font-weight: 600;">
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+                <button id="go-to-first-btn" class="btn" style="display: none; background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); color: white; font-weight: 600; box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);">
                     ↓ Jump to First Result
                 </button>
-            </div>
-            
-            <div style="margin-top: 0.75rem;">
-                <button id="show-all-btn" class="btn" style="background: white; color: #ec4899; border: 2px solid #ec4899; width: 100%;">
+                <button id="show-all-btn" class="btn" style="background: white; color: #ec4899; border: 2px solid #ec4899;">
                     View All Entries
                 </button>
             </div>
@@ -18662,11 +18656,28 @@
                 });
             });
 
-            // Sort comments by date (most recent first)
+            // Sort comments by date (most recent first) - handle M/D/YY format
             allComments.sort((a, b) => {
-                const dateA = new Date(a.date);
-                const dateB = new Date(b.date);
-                return dateB - dateA;
+                // Parse dates like "1/2/24" properly
+                const parseCommentDate = (dateStr) => {
+                    if (!dateStr) return new Date(0);
+                    const parts = dateStr.split('/');
+                    if (parts.length === 3) {
+                        const month = parseInt(parts[0], 10);
+                        const day = parseInt(parts[1], 10);
+                        let year = parseInt(parts[2], 10);
+                        // Convert 2-digit year to 4-digit (24 -> 2024, 25 -> 2025)
+                        if (year < 100) {
+                            year = year + 2000;
+                        }
+                        return new Date(year, month - 1, day);
+                    }
+                    return new Date(dateStr);
+                };
+                
+                const dateA = parseCommentDate(a.date);
+                const dateB = parseCommentDate(b.date);
+                return dateA - dateB; // Oldest first (so January is at top)
             });
 
             // Create the comments view HTML
