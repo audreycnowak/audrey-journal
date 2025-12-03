@@ -924,12 +924,25 @@
         }
         
         function showEntry(entryId) {
-            // Reload page and scroll to specific entry
-            location.reload();
+            // Clear active filters and show all entries
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('entry-search').value = '';
+            document.getElementById('search-results').textContent = '';
+            document.getElementById('go-to-first-btn').style.display = 'none';
+            
+            // Render all entries
+            renderEntries(sortedEntries);
+            generateFilters();
+            
+            // Scroll to the specific entry
             setTimeout(() => {
                 const element = document.getElementById(`entry-${entryId}`);
                 if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                    window.scrollTo({ 
+                        top: elementPosition - 150, 
+                        behavior: 'smooth' 
+                    });
                 }
             }, 100);
         }
