@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audrey Camille Nowak - Journal Archive</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Crimson Pro', serif;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #fffef9 0%, #fff9e6 100%);
+            box-shadow: 0 2px 8px rgba(236, 72, 153, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 4px solid #f472b6;
+        }
+        
+        header .container {
+            padding: 1.25rem 1rem;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .subtitle {
+            color: #ec4899;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+        
+        .date-range {
+            color: #6b7280;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+        
+        /* Welcome Section */
+        .welcome {
+            background: linear-gradient(135deg, #f472b6 0%, #fb7185 100%);
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            padding: 2rem;
+            color: white;
+            margin: 2rem 0;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .welcome h2 {
+            font-size: 1.875rem;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+        }
+        
+        .welcome p {
+            color: #fce7f3;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: white;
+            color: #ec4899;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (min-width: 640px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            header h1 {
+                font-size: 2.5rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .date-range {
+                font-size: 0.875rem;
+            }
+        }
+        
+        /* Card */
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.25rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        
+        .card-blue {
+            border-top: 4px solid #60a5fa;
+        }
+        
+        .card-pink {
+            border-top: 4px solid #f472b6;
+        }
+        
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card h3 span {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+        
+        /* Filter Buttons */
+        .filter-btn {
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 1rem;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.5rem;
+        }
+        
+        .filter-btn:hover {
+            background: #fce7f3;
+            transform: scale(1.02);
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .filter-btn .count {
+            color: #6b7280;
+        }
+        
+        .filter-btn.active .count {
+            color: white;
+        }
+        
+        /* Search Input */
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #f472b6;
+            box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.1);
+        }
+        
+        /* Journal Entries */
+        .entries {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .entry {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .entry-content {
+            padding: 1.25rem;
+        }
+        
+        @media (min-width: 640px) {
+            .entry-content {
+                padding: 1.75rem;
+            }
+        }
+        
+        .entry-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .entry-meta .date {
+            font-weight: 500;
+            color: #ec4899;
+        }
+        
+        .entry-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        
+        .post-content {
+            margin-top: 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .entry-title {
+                font-size: 1.875rem;
+            }
+        }
+        
+        .entry-body {
+            color: #374151;
+            line-height: 1.75;
+            margin-bottom: 1.5rem;
+        }
+        
+        .entry-body p {
+            margin-bottom: 1rem;
+        }
+        
+        .entry-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-reactions {
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stat-comments {
+            color: #3b82f6;
+        }
+        
+        .stat-shares {
+            color: #10b981;
+        }
+        
+        /* Comments Section */
+        .comments-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #fce7f3;
+        }
+        
+        .comments-section h4 {
+            font-weight: bold;
+            font-size: 1.125rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        
+        .comments-list {
+            max-height: 24rem;
+            overflow-y: auto;
+        }
+        
+        .comment-bubble {
+            background: linear-gradient(135deg, #fef3f8 0%, #ffffff 100%);
+            border-left: 3px solid #f472b6;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .comment-bubble p {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .commenter-name {
+            font-weight: 600;
+            color: #db2777;
+            cursor: pointer;
+        }
+        
+        .commenter-name:hover {
+            color: #9f1239;
+            text-decoration: underline;
+        }
+        
+        .comment-text {
+            color: #374151;
+        }
+        
+        .comment-date {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.25rem;
+        }
+        
+        /* All Comments View */
+        .all-comments-view {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .all-comments-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #fce7f3;
+        }
+        
+        .all-comments-header h2 {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .all-comments-header p {
+            color: #6b7280;
+        }
+        
+        .all-comments-header .count {
+            font-weight: 600;
+            color: #ec4899;
+        }
+        
+        .comment-card {
+            background: linear-gradient(135deg, #fef3f8 0%, #ffffff 100%);
+            border-left: 3px solid #f472b6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .comment-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .comment-card-title {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 0.875rem;
+        }
+        
+        .comment-card-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .comment-card-text {
+            color: #374151;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+        
+        .comment-card-context {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+        
+        .comment-card-excerpt {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #f9fafb;
+            border-radius: 0.25rem;
+            line-height: 1.4;
+        }
+        
+        .entry-link {
+            color: #ec4899;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .entry-link:hover {
+            text-decoration: underline;
+        }
+        
+        .back-section {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        /* Footer */
+        footer {
+            margin-top: 3rem;
+            padding: 1.5rem 0;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+        }
+        
+        footer p {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Loading message */
+        .loading-message {
+            text-align: center;
+            color: #9ca3af;
+            padding: 3rem 0;
+            font-size: 1.125rem;
+        }
+        
+        .no-results {
+            text-align: center;
+            color: #9ca3af;
+            padding: 3rem 0;
+            font-size: 1.125rem;
+        }
+        
+        .heart-icon {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e53e3e'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            margin-right: 0.25rem;
+        }
+        
+        /* Floating Navigation Buttons */
+        .float-nav {
+            position: fixed;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+        
+        .float-btn {
+            background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(244, 114, 182, 0.4);
+            transition: all 0.3s;
+            font-size: 1.25rem;
+        }
+        
+        .float-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(244, 114, 182, 0.6);
+        }
+        
+        .float-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .float-btn.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Tooltip for buttons */
+        .float-btn::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            right: 100%;
+            margin-right: 0.75rem;
+            background: #1f2937;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        
+        .float-btn:hover::before {
+            opacity: 1;
+        }
+        
+        /* Hide comments functionality */
+        .comments-section.hidden {
+            display: none;
+        }
+        
+        .toggle-comments-btn {
+            background: #f472b6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .toggle-comments-btn:hover {
+            background: #ec4899;
+        }
+        
+        @media (max-width: 640px) {
+            .float-nav {
+                right: 1rem;
+                bottom: 1rem;
+            }
+            
+            .float-btn {
+                width: 3rem;
+                height: 3rem;
+                font-size: 1rem;
+            }
+            
+            .float-btn::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>Audrey Camille Nowak</h1>
+            <p class="subtitle">A Chronicle of Hope, Strength, and Love</p>
+            <p class="date-range">Journal: <span id="journal-start-date">November 15, 2023</span> - <span id="journal-end-date">June 10, 2025</span></p>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+        
+        <!-- Welcome Card -->
+        <section class="welcome">
+            <h2>Welcome to the Archive 💗</h2>
+            <p>
+                This is a loving collection of Audrey's journal entries and updates throughout her journey. 
+                Browse by month or explore the incredible community of supporters who have been part of every step through their heartfelt comments.
+            </p>
+            
+            <!-- Search Box for Entries -->
+            <div style="margin-top: 1.5rem; margin-bottom: 1rem;">
+                <input 
+                    type="text" 
+                    id="entry-search" 
+                    placeholder="Search journal entries by keyword..." 
+                    style="width: 100%; padding: 0.75rem 1rem; border: 2px solid white; border-radius: 0.5rem; font-size: 1rem; background: white; color: #1f2937;"
+                >
+                <div id="search-results" style="margin-top: 0.5rem; font-size: 0.875rem; color: #fce7f3;"></div>
+            </div>
+            
+            <button id="show-all-btn" class="btn">
+                View All Entries
+            </button>
+        </section>
+
+        <!-- Navigation Cards -->
+        <section class="grid">
+            
+            <!-- Month Filter Card -->
+            <div class="card card-blue">
+                <h3><span>📅</span> Filter by Month</h3>
+                <div id="month-filters"></div>
+            </div>
+
+            <!-- Top Commenters Card -->
+            <div class="card card-pink">
+                <h3><span>💬</span> Active Supporters</h3>
+                
+                <!-- Search Box -->
+                <input 
+                    type="text" 
+                    id="commenter-search" 
+                    placeholder="Search for a person..." 
+                    class="search-input"
+                >
+                
+                <div id="commenter-filters"></div>
+            </div>
+
+        </section>
+
+        <!-- Journal Entries Container -->
+        <section id="journal-entries" class="entries">
+            <p class="loading-message" id="loading-message">Loading entries...</p>
+        </section>
+
+    </div>
+
+    <!-- Floating Navigation Buttons -->
+    <div class="float-nav">
+        <button class="float-btn" id="scroll-to-top" data-tooltip="Back to Top" onclick="scrollToTop()">
+            ↑
+        </button>
+        <button class="float-btn" id="toggle-all-comments" data-tooltip="Toggle All Comments" onclick="toggleAllComments()">
+            💬
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>💗 Created with love to preserve Audrey Camille Nowak's story • 2025</p>
+        </div>
+    </footer>
+
+    <script>
+        // ========== NAVIGATION FUNCTIONS (Global scope) ==========
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function toggleComments(entryId) {
+            const commentsSection = document.getElementById(`comments-${entryId}`);
+            if (!commentsSection) return;
+            
+            const button = commentsSection.querySelector('.toggle-comments-btn');
+            const commentsList = commentsSection.querySelector('.comments-list');
+            
+            if (commentsList.style.display === 'none') {
+                commentsList.style.display = 'block';
+                button.textContent = 'Hide Comments';
+            } else {
+                commentsList.style.display = 'none';
+                button.textContent = 'Show Comments';
+            }
+        }
+        
+        function togglePost(entryId) {
+            const postContent = document.getElementById(`post-content-${entryId}`);
+            if (!postContent) return;
+            
+            const entry = document.getElementById(`entry-${entryId}`);
+            const button = entry.querySelector('.toggle-comments-btn');
+            
+            if (postContent.style.display === 'none') {
+                postContent.style.display = 'block';
+                button.textContent = 'Hide Post';
+            } else {
+                postContent.style.display = 'none';
+                button.textContent = 'Show Post';
+            }
+        }
+        
+        function toggleAllComments() {
+            const allCommentsLists = document.querySelectorAll('.comments-list');
+            const allCommentsSections = document.querySelectorAll('.comments-section');
+            
+            if (allCommentsLists.length === 0) return;
+            
+            // Check if any comments are visible
+            let anyVisible = false;
+            allCommentsLists.forEach(list => {
+                if (list.style.display !== 'none') {
+                    anyVisible = true;
+                }
+            });
+            
+            // Toggle all
+            allCommentsSections.forEach((section) => {
+                const commentsList = section.querySelector('.comments-list');
+                const toggleBtn = section.querySelector('.toggle-comments-btn');
+                
+                if (anyVisible) {
+                    commentsList.style.display = 'none';
+                    if (toggleBtn) toggleBtn.textContent = 'Show Comments';
+                } else {
+                    commentsList.style.display = 'block';
+                    if (toggleBtn) toggleBtn.textContent = 'Hide Comments';
+                }
+            });
+        }
+        
+        function showEntry(entryId) {
+            // Reload page and scroll to specific entry
+            location.reload();
+            setTimeout(() => {
+                const element = document.getElementById(`entry-${entryId}`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+        
+        // Show/hide scroll to top button based on scroll position
+        window.addEventListener('scroll', () => {
+            const scrollBtn = document.getElementById('scroll-to-top');
+            if (scrollBtn) {
+                if (window.pageYOffset > 300) {
+                    scrollBtn.classList.remove('hidden');
+                } else {
+                    scrollBtn.classList.add('hidden');
+                }
+            }
+        });
+
+        // ========== SAMPLE DATA ==========
+        const JOURNAL_DATA = [
+            {
+                id: 1,
+                date: '2025-10-14',
+                displayDate: 'Tuesday, October 14, 2025',
+                title: "Today's update",
+                author: 'Audrey Nowak',
+                readTime: 4,
+                imageUrl: 'https://images.unsplash.com/photo-1517697471339-4aa32003c11a?w=600&h=400&fit=crop',
+                reactions: 28,
+                shares: 0,
+                content: [
+                    "Dear Angels,",
+                    "Tomorrow my port comes out!",
+                    "It's simple how something so small can carry so much weight. My port was put in on January 6, 2024 — a day that marked the start of a chapter I never wanted, but one that has taught me more than I ever imagined about love, fear, gratitude, generosity, vulnerability, and pain.",
+                    "Post this piece of plastic and titanium last week marked the end of my treatment — relief, anxiety, gratitude, exhaustion, wonder. All of it.",
+                    "And to Audrey's Angels — all of you have shown up, read, prayed, laughed, cried, texted, delivered, donated, and simply stayed — I don't have words big enough. More than that, I'm certain that! Your presence has been a safety net of love, even when I didn't know what to say. In fact, sometimes I worry about writing something 'worthy' of all that care — but the truth is, this story was never meant to be perfect. It's only meant to be real.",
+                    "Here's to the next chapter — one with fewer appointments, fewer scans, and maybe, finally, a few deep breaths.",
+                    "As always, Audrey's Angels — lift each other in love and prayer, just as you've lifted me. Witnessing this circle of care has quietly filled my life with purpose, and it's such a beautiful gift. I thank you, from the bottom of my heart. ❤️",
+                    "All my love,",
+                    "Audrey"
+                ],
+                comments: [
+                    { name: 'Alex Berkabile', text: 'Our prayers for you continue Audrey. Aun', date: '10/18/25' },
+                    { name: 'Audrey Nowak', text: 'Thank you Alex!', date: '10/30/25' },
+                    { name: 'Laurel Merchlewskl', text: 'So happy for you that this phase is OVER!!!!!!', date: '10/17/25' },
+                    { name: 'Audrey Nowak', text: 'Thank you Laurel. Me too!', date: '10/30/25' },
+                    { name: 'Sarah Mitchell', text: 'This brought tears to my eyes. So proud of you! 💗', date: '10/14/25' },
+                    { name: 'Jennifer Wang', text: 'Beautiful words, beautiful soul. Love you!', date: '10/14/25' },
+                    { name: 'Michael Patterson', text: 'What a journey. Thank you for sharing it with us.', date: '10/15/25' }
+                ]
+            },
+            {
+                id: 2,
+                date: '2025-09-22',
+                displayDate: 'Monday, September 22, 2025',
+                title: 'Scan Results - Good News!',
+                author: 'Audrey Nowak',
+                readTime: 3,
+                imageUrl: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=600&h=400&fit=crop',
+                reactions: 45,
+                shares: 2,
+                content: [
+                    "Hi everyone!",
+                    "Just got back from my appointment and I have wonderful news to share - my latest scans came back clear! The doctors are so pleased with my progress.",
+                    "I can't even put into words what this means to me and my family. Every clear scan feels like a gift, and I don't take a single one for granted.",
+                    "Thank you all for your continued prayers and support. You've carried me through the hardest days, and now you get to celebrate the good ones with me too.",
+                    "With gratitude,",
+                    "Audrey"
+                ],
+                comments: [
+                    { name: 'Sarah Mitchell', text: 'YES YES YES! So happy for you!!!', date: '09/22/25' },
+                    { name: 'David Thompson', text: 'This is the best news! Continuing to pray!', date: '09/22/25' },
+                    { name: 'Jennifer Wang', text: 'Crying happy tears! You deserve this! 💗', date: '09/22/25' },
+                    { name: 'Michael Patterson', text: 'Wonderful news! Keep fighting!', date: '09/22/25' },
+                    { name: 'Rebecca Torres', text: 'Praise God! So grateful for this update!', date: '09/22/25' },
+                    { name: 'Emily Richardson', text: 'Amazing!! Sending so much love!', date: '09/23/25' },
+                    { name: 'Audrey Nowak', text: 'Thank you all so much! Your support means everything! ❤️', date: '09/23/25' }
+                ]
+            },
+            {
+                id: 3,
+                date: '2025-08-10',
+                displayDate: 'Sunday, August 10, 2025',
+                title: 'Small Victories',
+                author: 'Audrey Nowak',
+                readTime: 3,
+                imageUrl: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&h=400&fit=crop',
+                reactions: 32,
+                shares: 1,
+                content: [
+                    "Today I walked around the block twice! 🎉",
+                    "I know that might not sound like much, but a few weeks ago, I could barely make it to the mailbox. These small victories are everything right now.",
+                    "The weather was perfect - sunny but not too hot - and I got to see all my neighbors working in their gardens. Mrs. Chen gave me a wave and a thumbs up. She's been leaving soup on our porch every week. Angels come in all forms.",
+                    "Taking time to celebrate every little win. They add up!",
+                    "Love to you all,",
+                    "Audrey"
+                ],
+                comments: [
+                    { name: 'Sarah Mitchell', text: 'GO AUDREY GO! Every step counts! 💪', date: '08/10/25' },
+                    { name: 'Michael Patterson', text: 'Mrs. Chen sounds amazing! And so are you!', date: '08/10/25' },
+                    { name: 'Emily Richardson', text: 'This made my day. So proud of you!', date: '08/10/25' },
+                    { name: 'David Thompson', text: 'Keep going, warrior! 💗', date: '08/11/25' },
+                    { name: 'Jennifer Wang', text: 'Small victories lead to big wins! Love you!', date: '08/11/25' }
+                ]
+            },
+            {
+                id: 4,
+                date: '2025-07-15',
+                displayDate: 'Tuesday, July 15, 2025',
+                title: 'Grateful Heart',
+                author: 'Audrey Nowak',
+                readTime: 2,
+                imageUrl: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=600&h=400&fit=crop',
+                reactions: 38,
+                shares: 3,
+                content: [
+                    "Quick update from me today!",
+                    "Treatment yesterday went smoothly. I'm tired but feeling okay. The nurses always make me laugh - they're the best.",
+                    "I've been thinking a lot about gratitude lately. Even on the hard days, there's always something to be grateful for. Today it's the cool breeze coming through my window and the sound of birds outside.",
+                    "And of course, all of you. Thank you for walking this road with me.",
+                    "With love,",
+                    "Audrey"
+                ],
+                comments: [
+                    { name: 'Rebecca Torres', text: 'Your positivity inspires me every day! 🙏', date: '07/15/25' },
+                    { name: 'Sarah Mitchell', text: 'Sending so much love your way! ❤️', date: '07/15/25' },
+                    { name: 'David Thompson', text: 'You are amazing. Keep that beautiful spirit!', date: '07/15/25' },
+                    { name: 'Jennifer Wang', text: 'Those nurses are lucky to have you as a patient!', date: '07/16/25' },
+                    { name: 'Audrey Nowak', text: 'You all are the best! Thank you! 💗', date: '07/16/25' }
+                ]
+            },
+            {
+                id: 5,
+                date: '2025-06-28',
+                displayDate: 'Saturday, June 28, 2025',
+                title: 'Weekend Reflections',
+                author: 'Audrey Nowak',
+                readTime: 4,
+                imageUrl: 'https://images.unsplash.com/photo-1512389142860-9c449e58a543?w=600&h=400&fit=crop',
+                reactions: 52,
+                shares: 4,
+                content: [
+                    "Hello my angels,",
+                    "It's been a beautiful weekend. The sun is shining, and I've been spending time on the porch with my favorite blanket and a good book.",
+                    "I wanted to share something that's been on my heart. This journey has taught me so much about the power of community. I never realized how much strength comes from knowing you're not alone.",
+                    "Every message, every prayer, every meal delivered to my door - it all adds up to something bigger than any one gesture. It becomes a net of love that catches you when you fall.",
+                    "I'm so grateful for each and every one of you. Thank you for being my net.",
+                    "All my love,",
+                    "Audrey"
+                ],
+                comments: [
+                    { name: 'Sarah Mitchell', text: 'We love you so much! You inspire us all! 💗', date: '06/28/25' },
+                    { name: 'Michael Patterson', text: 'Beautiful words from a beautiful soul!', date: '06/28/25' },
+                    { name: 'Emily Richardson', text: 'You are never alone. We are all here for you!', date: '06/28/25' },
+                    { name: 'Rebecca Torres', text: 'This made me cry. Thank YOU for sharing your journey!', date: '06/29/25' },
+                    { name: 'David Thompson', text: 'The privilege is ours. Keep shining! ✨', date: '06/29/25' },
+                    { name: 'Jennifer Wang', text: 'Love you Audrey! Your strength amazes me!', date: '06/29/25' }
+                ]
+            },
+            {
+                id: 6,
+                date: '2025-05-20',
+                displayDate: 'Tuesday, May 20, 2025',
+                title: 'First Treatment Day',
+                author: 'Audrey Nowak',
+                readTime: 3,
+                imageUrl: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&h=400&fit=crop',
+                reactions: 67,
+                shares: 5,
+                content: [
+                    "Well, day one is officially in the books.",
+                    "I won't lie - I was nervous this morning. But the treatment center was so welcoming, and the staff made me feel safe and cared for.",
+                    "I brought my favorite fuzzy blanket, downloaded some podcasts, and had a few visitors stop by (you know who you are ❤️). The time went faster than I expected.",
+                    "Feeling tired tonight but mostly feeling grateful. Grateful for modern medicine, for caring nurses, for all of you.",
+                    "One day down. We've got this.",
+                    "Love,",
+                    "Audrey"
+                ],
+                comments: [
+                    { name: 'Sarah Mitchell', text: 'You are crushing this! So proud of you! 💪', date: '05/20/25' },
+                    { name: 'David Thompson', text: 'One day at a time. You are doing amazing!', date: '05/20/25' },
+                    { name: 'Jennifer Wang', text: 'That blanket looked so cozy! Love you! 🤗', date: '05/20/25' },
+                    { name: 'Michael Patterson', text: 'First day done! You are a warrior!', date: '05/21/25' },
+                    { name: 'Rebecca Torres', text: 'Praying for you every single day! 🙏', date: '05/21/25' },
+                    { name: 'Emily Richardson', text: 'You inspire us all. Keep going! ❤️', date: '05/21/25' },
+                    { name: 'Alex Berkabile', text: 'Sending all our love and prayers your way!', date: '05/21/25' },
+                    { name: 'Audrey Nowak', text: 'Thank you everyone! Your support means the world! 💗', date: '05/22/25' }
+                ]
+            }
+        ];
+
+        // ========== GLOBAL STATE ==========
+        const journalContainer = document.getElementById('journal-entries');
+        const monthFiltersContainer = document.getElementById('month-filters');
+        const commenterFiltersContainer = document.getElementById('commenter-filters');
+        const showAllBtn = document.getElementById('show-all-btn');
+        
+        // Store all commenters for search functionality
+        let allCommenters = [];
+        
+        // ========== SEARCH FUNCTIONALITY ==========
+        
+        function highlightText(text, searchTerm) {
+            if (!searchTerm || searchTerm.trim() === '') return text;
+            
+            const term = searchTerm.trim();
+            const regex = new RegExp(`(${term})`, 'gi');
+            return text.replace(regex, '<mark style="background-color: #fde047; padding: 0.125rem 0.25rem; border-radius: 0.25rem;">$1</mark>');
+        }
+        
+        function searchEntries(searchTerm) {
+            const term = searchTerm.toLowerCase().trim();
+            const searchResults = document.getElementById('search-results');
+            
+            if (term === '') {
+                searchResults.textContent = '';
+                renderEntries(sortedEntries);
+                // Re-populate filters
+                generateFilters();
+                return;
+            }
+            
+            // Clear active filters when searching
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            
+            // Search in title, content, and comments
+            const results = sortedEntries.filter(entry => {
+                // Search in title
+                if (entry.title.toLowerCase().includes(term)) return true;
+                
+                // Search in content
+                const fullContent = entry.content.join(' ').toLowerCase();
+                if (fullContent.includes(term)) return true;
+                
+                // Search in comments
+                const commentText = entry.comments.map(c => c.text).join(' ').toLowerCase();
+                if (commentText.includes(term)) return true;
+                
+                return false;
+            });
+            
+            if (results.length > 0) {
+                searchResults.textContent = `Found ${results.length} ${results.length === 1 ? 'entry' : 'entries'} matching "${searchTerm}"`;
+                renderEntriesWithHighlight(results, searchTerm);
+                
+                // Update filters to only show data from search results
+                updateFiltersForSearchResults(results);
+            } else {
+                searchResults.textContent = `No entries found matching "${searchTerm}"`;
+                journalContainer.innerHTML = '<p class="no-results">No entries match your search. Try different keywords or click "View All Entries".</p>';
+                // Clear filters
+                monthFiltersContainer.innerHTML = '<p style="font-size: 0.875rem; color: #6b7280; font-style: italic; padding: 0.5rem 1rem;">No months in results</p>';
+                commenterFiltersContainer.innerHTML = '<p style="font-size: 0.875rem; color: #6b7280; font-style: italic; padding: 0.5rem 1rem;">No supporters in results</p>';
+            }
+            
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        }
+        
+        function renderEntriesWithHighlight(entries, searchTerm) {
+            document.getElementById('loading-message')?.remove();
+            
+            if (entries.length === 0) {
+                journalContainer.innerHTML = '<p class="no-results">No entries match your filter. Click "View All Entries" to reset.</p>';
+                return;
+            }
+
+            // Create entries with highlighted text
+            const highlightedHTML = entries.map(entry => {
+                const commentsHTML = entry.comments.map(c => `
+                    <div class="comment-bubble">
+                        <p>
+                            <span class="commenter-name commenter-name-link" data-commenter="${c.name}">${c.name}:</span> 
+                            <span class="comment-text">${highlightText(c.text, searchTerm)}</span>
+                        </p>
+                        <p class="comment-date">${c.date}</p>
+                    </div>
+                `).join('');
+
+                return `
+                    <article class="entry" id="entry-${entry.id}">
+                        <div class="entry-content">
+                            <!-- Meta Info and Title (Always Visible) -->
+                            <div class="entry-meta">
+                                <span class="date">📅 ${entry.displayDate}</span>
+                                <span>•</span>
+                                <span>✍️ ${entry.author}</span>
+                                <span>•</span>
+                                <span>⏱️ ${entry.readTime} min read</span>
+                            </div>
+
+                            <!-- Title with Toggle Button -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                                <h3 class="entry-title" style="margin-bottom: 0;">${highlightText(entry.title, searchTerm)}</h3>
+                                <button class="toggle-comments-btn" onclick="togglePost(${entry.id})">Hide Post</button>
+                            </div>
+
+                            <!-- Post Content (Collapsible) -->
+                            <div id="post-content-${entry.id}" class="post-content">
+                                <!-- Body Content -->
+                                <div class="entry-body">
+                                    ${entry.content.map(p => `<p>${highlightText(p, searchTerm)}</p>`).join('')}
+                                </div>
+
+                                <!-- Engagement Stats -->
+                                <div class="entry-stats">
+                                    <span class="stat-reactions">
+                                        <span class="heart-icon"></span> ${entry.reactions.toLocaleString()} reactions
+                                    </span>
+                                    <span class="stat-comments">💬 ${entry.comments.length} comments</span>
+                                    <span class="stat-shares">🔄 ${entry.shares} shares</span>
+                                </div>
+
+                                <!-- Comments Section -->
+                                <div class="comments-section" id="comments-${entry.id}">
+                                    <h4>
+                                        💬 Comments (${entry.comments.length})
+                                        <button class="toggle-comments-btn" onclick="toggleComments(${entry.id})">Hide Comments</button>
+                                    </h4>
+                                    <div class="comments-list">
+                                        ${commentsHTML}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+            
+            journalContainer.innerHTML = highlightedHTML;
+            attachFilterListeners();
+        }
+        
+        function updateFiltersForSearchResults(results) {
+            // Update month filters based on search results
+            const months = results.map(e => {
+                const date = new Date(e.date);
+                return date.toLocaleString('en-US', { year: 'numeric', month: 'long' });
+            });
+            const uniqueMonths = [...new Set(months)];
+
+            if (uniqueMonths.length > 0) {
+                monthFiltersContainer.innerHTML = uniqueMonths.map(month => 
+                    `<button class="filter-btn" data-type="month" data-value="${month}">
+                        ${month}
+                    </button>`
+                ).join('');
+            } else {
+                monthFiltersContainer.innerHTML = '<p style="font-size: 0.875rem; color: #6b7280; font-style: italic; padding: 0.5rem 1rem;">No months in results</p>';
+            }
+
+            // Update commenter filters based on search results ONLY
+            // Only show commenters who commented on the filtered posts
+            const commenterCounts = results.flatMap(e => e.comments).reduce((acc, c) => {
+                acc[c.name] = (acc[c.name] || 0) + 1;
+                return acc;
+            }, {});
+
+            const sortedCommenters = Object.entries(commenterCounts).sort(([,a], [,b]) => b - a);
+
+            if (sortedCommenters.length > 0) {
+                commenterFiltersContainer.innerHTML = sortedCommenters.map(([name, count]) => 
+                    `<button class="filter-btn" data-type="commenter" data-value="${name}">
+                        ${name} <span class="count">(${count})</span>
+                    </button>`
+                ).join('');
+            } else {
+                commenterFiltersContainer.innerHTML = '<p style="font-size: 0.875rem; color: #6b7280; font-style: italic; padding: 0.5rem 1rem;">No supporters in results</p>';
+            }
+            
+            // Re-attach filter listeners
+            attachFilterListeners();
+        }
+
+        // Sort entries by date (newest first)
+        const sortedEntries = [...JOURNAL_DATA].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // ========== UTILITY FUNCTIONS ==========
+
+        function createEntryHTML(entry) {
+            const commentsHTML = entry.comments.map(c => `
+                <div class="comment-bubble">
+                    <p>
+                        <span class="commenter-name commenter-name-link" data-commenter="${c.name}">${c.name}:</span> 
+                        <span class="comment-text">${c.text}</span>
+                    </p>
+                    <p class="comment-date">${c.date}</p>
+                </div>
+            `).join('');
+
+            return `
+                <article class="entry" id="entry-${entry.id}">
+                    <div class="entry-content">
+                        <!-- Meta Info and Title (Always Visible) -->
+                        <div class="entry-meta">
+                            <span class="date">📅 ${entry.displayDate}</span>
+                            <span>•</span>
+                            <span>✍️ ${entry.author}</span>
+                            <span>•</span>
+                            <span>⏱️ ${entry.readTime} min read</span>
+                        </div>
+
+                        <!-- Title with Toggle Button -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                            <h3 class="entry-title" style="margin-bottom: 0;">${entry.title}</h3>
+                            <button class="toggle-comments-btn" onclick="togglePost(${entry.id})">Hide Post</button>
+                        </div>
+
+                        <!-- Post Content (Collapsible) -->
+                        <div id="post-content-${entry.id}" class="post-content">
+                            <!-- Body Content -->
+                            <div class="entry-body">
+                                ${entry.content.map(p => `<p>${p}</p>`).join('')}
+                            </div>
+
+                            <!-- Engagement Stats -->
+                            <div class="entry-stats">
+                                <span class="stat-reactions">
+                                    <span class="heart-icon"></span> ${entry.reactions.toLocaleString()} reactions
+                                </span>
+                                <span class="stat-comments">💬 ${entry.comments.length} comments</span>
+                                <span class="stat-shares">🔄 ${entry.shares} shares</span>
+                            </div>
+
+                            <!-- Comments Section -->
+                            <div class="comments-section" id="comments-${entry.id}">
+                                <h4>
+                                    💬 Comments (${entry.comments.length})
+                                    <button class="toggle-comments-btn" onclick="toggleComments(${entry.id})">Hide Comments</button>
+                                </h4>
+                                <div class="comments-list">
+                                    ${commentsHTML}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function showAllCommentsFromPerson(commenterName) {
+            // Collect all comments from this person across all entries
+            const allComments = [];
+            
+            sortedEntries.forEach(entry => {
+                entry.comments.forEach(comment => {
+                    if (comment.name === commenterName) {
+                        // Get first 2 sentences or ~100 characters from the entry content
+                        const fullText = entry.content.join(' ');
+                        let excerpt = fullText.substring(0, 150);
+                        
+                        // Try to end at a sentence
+                        const lastPeriod = excerpt.lastIndexOf('.');
+                        const lastQuestion = excerpt.lastIndexOf('?');
+                        const lastExclamation = excerpt.lastIndexOf('!');
+                        const lastSentence = Math.max(lastPeriod, lastQuestion, lastExclamation);
+                        
+                        if (lastSentence > 50) {
+                            excerpt = excerpt.substring(0, lastSentence + 1);
+                        }
+                        
+                        excerpt += '...';
+                        
+                        allComments.push({
+                            ...comment,
+                            entryTitle: entry.title,
+                            entryDate: entry.displayDate,
+                            entryId: entry.id,
+                            excerpt: excerpt
+                        });
+                    }
+                });
+            });
+
+            // Sort comments by date (most recent first)
+            allComments.sort((a, b) => {
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                return dateB - dateA;
+            });
+
+            // Create the comments view HTML
+            const commentsViewHTML = `
+                <div class="all-comments-view" id="all-comments-header">
+                    <div class="all-comments-header">
+                        <h2>All Comments by ${commenterName}</h2>
+                        <p>Total comments: <span class="count">${allComments.length}</span> across ${[...new Set(allComments.map(c => c.entryId))].length} post${[...new Set(allComments.map(c => c.entryId))].length === 1 ? '' : 's'}</p>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        ${allComments.map(comment => `
+                            <div class="comment-card">
+                                <div class="comment-card-header">
+                                    <h4 class="comment-card-title">On: ${comment.entryTitle}</h4>
+                                    <span class="comment-card-date">${comment.date}</span>
+                                </div>
+                                <p class="comment-card-text">${comment.text}</p>
+                                <p class="comment-card-context">Posted on: ${comment.entryDate}</p>
+                                <div class="comment-card-excerpt">
+                                    <strong>From the post:</strong> ${comment.excerpt}
+                                    <br>
+                                    <a href="#entry-${comment.entryId}" class="entry-link" onclick="showEntry(${comment.entryId})">→ View full post and comment</a>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="back-section">
+                        <button onclick="location.reload()" class="btn">
+                            ← Back to All Entries
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            journalContainer.innerHTML = commentsViewHTML;
+            
+            // Scroll to the "All Comments by" header
+            setTimeout(() => {
+                const header = document.getElementById('all-comments-header');
+                if (header) {
+                    header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+
+        function renderEntries(entries) {
+            document.getElementById('loading-message')?.remove();
+            
+            if (entries.length === 0) {
+                journalContainer.innerHTML = '<p class="no-results">No entries match your filter. Click "View All Entries" to reset.</p>';
+                return;
+            }
+
+            journalContainer.innerHTML = entries.map(createEntryHTML).join('');
+            attachFilterListeners();
+        }
+
+        function generateFilters() {
+            // Month Filters
+            const months = sortedEntries.map(e => {
+                const date = new Date(e.date);
+                return date.toLocaleString('en-US', { year: 'numeric', month: 'long' });
+            });
+            const uniqueMonths = [...new Set(months)];
+
+            monthFiltersContainer.innerHTML = uniqueMonths.map(month => 
+                `<button class="filter-btn" data-type="month" data-value="${month}">
+                    ${month}
+                </button>`
+            ).join('');
+
+            // Commenter Filters
+            const commenterCounts = sortedEntries.flatMap(e => e.comments).reduce((acc, c) => {
+                acc[c.name] = (acc[c.name] || 0) + 1;
+                return acc;
+            }, {});
+
+            const sortedCommenters = Object.entries(commenterCounts).sort(([,a], [,b]) => b - a);
+            allCommenters = sortedCommenters; // Store for search
+
+            displayCommenters(sortedCommenters.slice(0, 15));
+            
+            // Add search functionality
+            const searchInput = document.getElementById('commenter-search');
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                
+                if (searchTerm === '') {
+                    // Show top 15 if search is empty
+                    displayCommenters(allCommenters.slice(0, 15));
+                } else {
+                    // Filter commenters by search term
+                    const filtered = allCommenters.filter(([name]) => 
+                        name.toLowerCase().includes(searchTerm)
+                    );
+                    displayCommenters(filtered);
+                }
+            });
+        }
+        
+        function displayCommenters(commenters) {
+            if (commenters.length === 0) {
+                commenterFiltersContainer.innerHTML = '<p style="font-size: 0.875rem; color: #6b7280; font-style: italic; padding: 0.5rem 1rem;">No supporters found</p>';
+                return;
+            }
+            
+            commenterFiltersContainer.innerHTML = commenters.map(([name, count]) => 
+                `<button class="filter-btn" data-type="commenter" data-value="${name}">
+                    ${name} <span class="count">(${count})</span>
+                </button>`
+            ).join('');
+            
+            // Re-attach event listeners after updating the DOM
+            attachFilterListeners();
+        }
+
+        function handleFilterClick(e) {
+            const btn = e.target.closest('.filter-btn');
+            if (!btn) return;
+
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const type = btn.getAttribute('data-type');
+            const value = btn.getAttribute('data-value');
+
+            let filtered = [];
+
+            if (type === 'month') {
+                filtered = sortedEntries.filter(e => {
+                    const entryMonth = new Date(e.date).toLocaleString('en-US', { year: 'numeric', month: 'long' });
+                    return entryMonth === value;
+                });
+            } else if (type === 'commenter') {
+                // Filter entries where this person commented
+                filtered = sortedEntries.filter(e => e.comments.some(c => c.name === value));
+            }
+
+            renderEntries(filtered);
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        }
+
+        function attachFilterListeners() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', handleFilterClick);
+            });
+            
+            // Add click handlers for commenter names within comments
+            document.querySelectorAll('.commenter-name-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const commenterName = e.target.getAttribute('data-commenter');
+                    showAllCommentsFromPerson(commenterName);
+                });
+            });
+        }
+
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            generateFilters();
+            renderEntries(sortedEntries);
+            
+            // Entry search functionality
+            const entrySearchInput = document.getElementById('entry-search');
+            let searchTimeout;
+            entrySearchInput.addEventListener('input', (e) => {
+                // Debounce search to avoid too many renders while typing
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    searchEntries(e.target.value);
+                }, 300);
+            });
+            
+            showAllBtn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                // Clear search box and results
+                document.getElementById('entry-search').value = '';
+                document.getElementById('search-results').textContent = '';
+                renderEntries(sortedEntries);
+                // Regenerate full filters
+                generateFilters();
+                window.scrollTo({ top: 400, behavior: 'smooth' });
+            });
+
+            attachFilterListeners();
+        });
+    </script>
+</body>
+</html>
